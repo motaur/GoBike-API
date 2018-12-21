@@ -81,4 +81,30 @@ namespace WebApplication1.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
+    public class UserDetailsBindingModel
+    {        
+        [Display(Name = "firstname")]
+        public string firstname { get; set; }          
+        
+        [Display(Name = "lastname")]
+        public string lastname { get; set; }
+
+        [Display(Name = "zip")]
+        public string zip { get; set; }
+
+        [Display(Name = "street")]
+        public string street { get; set; }
+
+        [Display(Name = "telephone")]
+        public string telephone { get; set; }
+
+        [Display(Name = "state")]
+        public string state { get; set; }
+
+        [Display(Name = "city")]
+        public string city { get; set; }
+
+
+    }
 }

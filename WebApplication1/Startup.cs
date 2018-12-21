@@ -12,6 +12,9 @@ namespace WebApplication1
     {
         public void Configuration(IAppBuilder app)
         {
+            //added externally
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
             ConfigureAuth(app);
         }
     }

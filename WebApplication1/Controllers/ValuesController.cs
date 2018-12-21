@@ -7,13 +7,20 @@ using System.Web.Http;
 
 namespace WebApplication1.Controllers
 {
-    [Authorize]
+    [Authorize/*(Roles = "admin")*/]
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        [Route("api/getUsers"), HttpGet]
+        public IEnumerable<Models.ApplicationUser> Get()
         {
-            return new string[] { "value1", "value2" };
+            Models.ApplicationDbContext UsersContext = new Models.ApplicationDbContext();
+            
+            var Users = UsersContext.Users.ToList();
+            //Users.ForEach(Console.WriteLine);
+
+            return Users;
+          
         }
 
         // GET api/values/5

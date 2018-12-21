@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -54,20 +55,40 @@ namespace WebApplication1.Controllers
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
-        public UserInfoViewModel GetUserInfo()
+         public DataTable GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            return new UserInfoViewModel
-            {
-                Email = User.Identity.GetUserName(),
-                HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
-            };
+            return Test.Controllers.BikeController.bc.getUserInfo(User.Identity.GetUserName());
+
+            /* return new UserInfoViewModel
+             {
+                 Email = User.Identity.GetUserName(),
+                 HasRegistered = externalLogin == null,
+                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+             };*/
+        }
+
+        // GET api/Account/getOrdersByUser
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("getOrdersByUser")]
+        public DataTable getOrdersByUser()
+        {
+            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+
+            return Test.Controllers.BikeController.bc.getOrdersByUser(User.Identity.GetUserName());
+
+            /* return new UserInfoViewModel
+             {
+                 Email = User.Identity.GetUserName(),
+                 HasRegistered = externalLogin == null,
+                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+             };*/
         }
 
         // POST api/Account/Logout
         [Route("Logout")]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -328,6 +349,9 @@ namespace WebApplication1.Controllers
                 return BadRequest(ModelState);
             }
 
+            //send credentinals to my DB
+            Test.Controllers.BikeController.bc.registerUser(model.Email, model.Password);
+
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
@@ -339,6 +363,21 @@ namespace WebApplication1.Controllers
 
             return Ok();
         }
+
+        // POST api/Account/UpdateProfile
+        [Route("UpdateProfile")]
+        [HostAuthentication(authenticationType: DefaultAuthenticationTypes.ExternalBearer)]
+        public IHttpActionResult UpdateProfile(UserDetailsBindingModel model)
+        {
+            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+
+            string username = User.Identity.GetUserName();
+            //send credentinals to my DB
+            Test.Controllers.BikeController.bc.UpdateProfile(model, username);
+
+            return Ok();
+        }
+
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
