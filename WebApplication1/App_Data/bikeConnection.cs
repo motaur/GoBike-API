@@ -8,31 +8,13 @@ using WebApplication1.Models;
 using System.Security.Policy;
 
 namespace Test.Models
-{/* DB Procedure
-    CREATE DEFINER=`root`@`localhost` PROCEDURE `bike_prod`(in operation int,in idP int, in nameP varchar(45),in priceP double,in quantityP int,in descriptionP varchar(255),in brandP varchar(45) )
-BEGIN
-	case operation
-		#get list of all products
-        when 1 then 
-        select * from shop.products;
-        
-        #get specific product by id 
-        when 2 then
-        select * from shop.products
-		where id = idP; 
-	
-		#set ... add this string to setter 
-        #SET SQL_SAFE_UPDATE = 0;
-	else begin end;
-    end case;
-END*/
+{
     public class bikeConnection
     {       
         private string allBikes = "bike_prod";
         private string dbname = "shop";
         private MySqlConnection con = new MySqlConnection("server=localhost;database=shop;uid=root;pwd=root;SslMode=none");
-
-
+        
         public DataTable getBikes()
         {
             try
@@ -361,6 +343,54 @@ END*/
             catch (Exception ex)
             {
                 
+                throw ex;
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        public DataTable deleteProd(int id)
+        {
+            try
+            {
+                con.Open();
+
+                DataTable dat = new DataTable();
+
+                List<MySqlParameter> parameters = new List<MySqlParameter>()
+                {
+                    new MySqlParameter("idP", id)
+                    
+                };
+
+                if (con.State == ConnectionState.Open)
+                {
+                    con.ChangeDatabase(dbname);
+                    MySqlCommand cmd = new MySqlCommand("removeProd", con)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    if (parameters != null)
+                    {
+                        foreach (MySqlParameter param in parameters)
+                        {
+                            cmd.Parameters.Add(param);
+                        }
+                    }
+                    MySqlDataAdapter adap = new MySqlDataAdapter(cmd);
+                    adap.Fill(dat);
+                }
+                return dat;
+            }
+            catch (Exception ex)
+            {
+
                 throw ex;
             }
             finally

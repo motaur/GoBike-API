@@ -19,7 +19,7 @@ namespace Test.Controllers
         // GET: api/getBikes
         [Route("api/getBikes"), HttpGet]
         [AllowAnonymous]
-        public IHttpActionResult Get()
+        public IHttpActionResult getBikes()
         {            
             return Ok(bc.getBikes());
         }
@@ -53,6 +53,18 @@ namespace Test.Controllers
         {
             if(User.Identity.GetUserName().Equals("admin"))
                 return Ok(bc.addProduct(product.brand, product.name, product.description, product.image, product.quantity, product.price));
+
+            return null;
+
+        }
+
+        // GET api/deleteProd
+        [Route("api/deleteProd"), HttpGet]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        public IHttpActionResult deleteProd(int id)
+        {
+            if (User.Identity.GetUserName().Equals("admin"))
+                return Ok(bc.deleteProd(id));
 
             return null;
 
