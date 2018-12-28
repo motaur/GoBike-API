@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -29,6 +30,19 @@ namespace WebApplication1.Controllers
 
         public AccountController()
         {
+        }
+
+        // GET api/values
+        [Route("api/getUsers"), HttpGet]
+        public IEnumerable<Models.ApplicationUser> Get()
+        {
+            Models.ApplicationDbContext UsersContext = new Models.ApplicationDbContext();
+
+            var Users = UsersContext.Users.ToList();
+            //Users.ForEach(Console.WriteLine);
+
+            return Users;
+
         }
 
         public AccountController(ApplicationUserManager userManager,

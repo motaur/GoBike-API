@@ -19,20 +19,10 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
-                DataTable dat = new DataTable() { TableName = "prods" }; ;
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
-                List<MySqlParameter> parameters = new List<MySqlParameter>()
-                {
-                    new MySqlParameter("operation",1),
-                    new MySqlParameter("idP",0),
-                    new MySqlParameter("nameP",0),
-                    new MySqlParameter("priceP",0),
-                    new MySqlParameter("quantityP",0),
-                    new MySqlParameter("descriptionP",0),
-                    new MySqlParameter("brandP",0),
-                    new MySqlParameter("imageP",0)
-                };
+                DataTable dat = new DataTable();
 
                 if (con.State == ConnectionState.Open)
                 {
@@ -41,13 +31,6 @@ namespace Test.Models
                     {
                         CommandType = CommandType.StoredProcedure
                     };
-                    if (parameters != null)
-                    {
-                        foreach (MySqlParameter param in parameters)
-                        {
-                            cmd.Parameters.Add(param);
-                        }
-                    }
                     MySqlDataAdapter adap = new MySqlDataAdapter(cmd);
                     adap.Fill(dat);
                 }
@@ -71,7 +54,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
                 DataTable dat = new DataTable() { TableName = "orders" };
 
                 List<MySqlParameter> parameters = new List<MySqlParameter>()
@@ -116,7 +100,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
                 DataTable dat = new DataTable() { TableName = "users" };
 
                 List<MySqlParameter> parameters = new List<MySqlParameter>()
@@ -161,7 +146,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
                 DataTable dat = new DataTable() { TableName = "prods_in_carts" }; ;
 
                 List<MySqlParameter> parameters = new List<MySqlParameter>()
@@ -207,7 +193,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -257,7 +244,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -306,7 +294,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -358,7 +347,8 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -407,7 +397,9 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -456,7 +448,9 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
@@ -510,7 +504,9 @@ namespace Test.Models
         {
             try
             {
-                con.Open();
+
+                if (con.State == ConnectionState.Closed)
+                    con.Open();
 
                 DataTable dat = new DataTable();
 
